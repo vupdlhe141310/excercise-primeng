@@ -1,0 +1,153 @@
+<p-table [value]="Students" dataKey="masv" editMode="row" class="table">
+  <ng-template pTemplate="caption">
+    <h2>List of Students</h2>
+    <p-button class="button" label="ADD" (onClick)="onStudentAdd()"></p-button>
+  </ng-template>
+  <ng-template pTemplate="header" class="thead-dark">
+    <tr>
+      <th>Mã SV</th>
+      <th>Họ</th>
+      <th>Tên</th>
+      <th>Giới tính</th>
+      <th>Ngày sinh</th>
+      <th>Tỉnh</th>
+      <th>Mã lớp</th>
+      <th></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+    <tr [pEditableRow]="rowData">
+      <td>
+        {{rowData.masv}}
+
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText type="text" [(ngModel)]="rowData.hoDem">
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{rowData.hoDem}}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText type="text" [(ngModel)]="rowData.ten">
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{rowData.ten}}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText type="text" [(ngModel)]="rowData.gioiTinh">
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{rowData.gioiTinh}}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText type="date" [(ngModel)]="rowData.ngaySinh">
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{rowData.ngaySinh}}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText type="text" [(ngModel)]="rowData.tinh">
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{rowData.tinh}}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText type="text" [(ngModel)]="rowData.maLop">
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{rowData.maLop}}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td style="text-align:center">
+        <button *ngIf="!editing" pButton type="button" pInitEditableRow class="btn btn-success"
+          (click)="onRowEditInit(rowData)">Sửa</button>
+
+        <button *ngIf="!editing" pButton type="button" class="btn btn-danger"
+          (click)="deleteStudent(rowData)">Xóa</button>
+
+        <!-- Sửa -->
+        <button *ngIf="editing" pButton type="button" pSaveEditableRow class="btn btn-success"
+          (click)="onRowEditSave(rowData)">Lưu</button>
+        <button *ngIf="editing" pButton type="button" pCancelEditableRow class="btn btn-danger"
+          (click)="onRowEditCancel(rowData, ri)">Hủy</button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+  <p-dialog [(visible)]="displayDialog" width="1200" height="1200" showEffect="explode" [modal]="true">
+
+    <div class="card">
+      <form #StudentForm="ngForm" novalidate>
+        <h4 class="card-header">Thông tin sinh viên</h4>
+        <div class="card-body" *ngIf="studentForDialog">
+          <div class="form-group">
+            <label>Ma SV</label>
+            <input class="form-control" type="text" pInputText id="masv" name="masv" required
+              [(ngModel)]="studentForDialog.masv" />
+          </div>
+          <div class="form-group">
+            <label>hoDem</label>
+            <input class="form-control" type="text" pInputText id="hoDem" name="hoDem" required
+              [(ngModel)]="studentForDialog.hoDem" />
+          </div>
+          <div class="form-group">
+            <label>ten</label>
+            <input class="form-control" type="text" pInputText id="ten" name="ten" required
+              [(ngModel)]="studentForDialog.ten" />
+          </div>
+          <div class="form-group">
+            <label>gioiTinh</label>
+            <input class="form-control" type="text" pInputText id="gioiTinh" name="gioiTinh" required
+              [(ngModel)]="studentForDialog.gioiTinh" />
+
+          </div>
+          <div class="form-group">
+            <label>ngaySinh</label>
+            <input class="form-control" type="date" pInputText id="ngaySinh" name="ngaySinh" required
+              [(ngModel)]="studentForDialog.ngaySinh" />
+          </div>
+          <div class="form-group">
+            <label>tinh</label>
+            <input class="form-control" type="text" pInputText id="tinh" name="tinh" required
+              [(ngModel)]="studentForDialog.tinh" />
+          </div>
+          <div class="form-group">
+            <label>maLop</label>
+            <input class="form-control" type="text" pInputText id="maLop" name="maLop" required
+              [(ngModel)]="studentForDialog.maLop" />
+          </div>
+        </div>
+      </form>
+
+      <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+          <button type="submit" pButton class="btn btn-primary btn-block" (click)="saveStudent()"
+            [disabled]="!StudentForm.form.valid">Lưu</button>
+        </div>
+      </p-footer>
+    </div>
+  </p-dialog>
